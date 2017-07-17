@@ -12,7 +12,7 @@ import django
 from django.utils import timezone
 django.setup()
 
-
+import logging
 from twisted.internet import task
 from twisted.internet import reactor
 from woid.apps.services.models import Service
@@ -37,8 +37,11 @@ def prepare_service():
     mingjing_service, created = Service.objects.get_or_create(slug='mingjing')
     if created:
         mingjing_service.save()
+    logging.info('prepared all services')
 
 def main():
+    logging.info('start crawling')
+
     service_crawlers = [
         #(crawlers.RedditCrawler(), FIVE_MINUTES),
         #(crawlers.MediumCrawler(), FIVE_MINUTES),

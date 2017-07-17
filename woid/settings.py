@@ -26,7 +26,7 @@ SECRET_KEY = '5234782390145617456091023'
 
 DEBUG = True
 
-ALLOWED_HOSTS = [u'.localhost']
+ALLOWED_HOSTS = [u'.localhost', u'*.elasticbeanstalk.com']
 
 
 MESSAGE_LEVEL = 'DEBUG'
@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'woid.apps.accounts',
     'woid.apps.core',
     'woid.apps.services',
+    #'woid.apps.myapp',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -78,7 +79,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'woid.wsgi.application'
 
 if 'RDS_HOSTNAME' in os.environ:
-    DATABASE = {
+    DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': os.environ['RDS_DB_NAME'],
@@ -90,10 +91,8 @@ if 'RDS_HOSTNAME' in os.environ:
                 'sql_mode': 'TRADITIONAL',
                 'charset': 'utf8',
                 'init_command': 'SET '
-                    'storage_engine=INNODB,'
                     'character_set_connection=utf8,'
-                    'collation_connection=utf8_bin,'
-                    'SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED',
+                    'collation_connection=utf8_bin',
             },  # Now we have a mild degree of confidence :-)
         }
     }

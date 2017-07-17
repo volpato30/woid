@@ -190,7 +190,7 @@ class GithubCrawler(AbstractBaseCrawler):
                 elif language:
                     description = language
 
-                story.description = description
+                story.description = unicode(description)
 
                 story.status = Story.OK
                 story.save()
