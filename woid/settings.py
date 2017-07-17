@@ -22,14 +22,14 @@ from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 PROJECT_DIR = Path(__file__).parent
 
 
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = '5234782390145617456091023'
 
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = True
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+ALLOWED_HOSTS = [u'.localhost']
 
 
-MESSAGE_LEVEL = config('MESSAGE_LEVEL', default=message_constants.INFO, cast=int)
+MESSAGE_LEVEL = 'DEBUG'
 
 
 INSTALLED_APPS = (
@@ -99,8 +99,7 @@ if 'RDS_HOSTNAME' in os.environ:
     }
 else:
     DATABASES = {
-        'default': dj_database_url.config(
-        default = config('DATABASE_URL'))
+        'default': dj_database_url.config(default='mysql://woiduser:password@localhost/woiddb')
     }
 
 
@@ -138,5 +137,5 @@ LOGIN_REDIRECT_URL = '/'
 
 TEMPLATE_CONTEXT_PROCESSORS += ('django.core.context_processors.request',)
 
-NYTIMES_API_KEY = config('NYTIMES_API_KEY')
+NYTIMES_API_KEY = '646aa3817bdb442da24dbe74e6e8a0fe'
 
