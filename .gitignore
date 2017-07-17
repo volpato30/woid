@@ -60,3 +60,8 @@ target/
 .DS_Store
 .env
 *.sqlite3
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
