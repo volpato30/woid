@@ -97,7 +97,7 @@ class GithubClient(AbstractBaseClient):
                 description = description.strip()
             else:
                 description = ''
-            repo_data['description'] = description
+            repo_data['description'] = unicode(description)
 
             lang = repo.find(attrs={'itemprop': 'programmingLanguage'})
             if lang:
