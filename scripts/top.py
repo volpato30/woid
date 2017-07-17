@@ -23,16 +23,20 @@ FIVE_MINUTES = 5 * 60
 THIRTY_MINUTES = 30 * 60
 
 def prepare_service():
-    hn_service = Service.objects.get_or_create(slug='hn')
-    hn_service.save()
-    nytimes_service = Service.objects.get_or_create(slug='nytimes')
-    nytimes_service.story_url = 'https://www.nytimes.com/'
-    nytimes_service.save()
-    github_service = Service.objects.get_or_create(slug='github')
-    github_service.story_url = 'https://github.com/'
-    github_service.save()
-    mingjing_service = Service.objects.get_or_create(slug='mingjing')
-    mingjing_service.save()
+    hn_service, created = Service.objects.get_or_create(slug='hn')
+    if created:
+        hn_service.save()
+    nytimes_service, created = Service.objects.get_or_create(slug='nytimes')
+    if created:
+        nytimes_service.story_url = 'https://www.nytimes.com/'
+        nytimes_service.save()
+    github_service, created = Service.objects.get_or_create(slug='github')
+    if created:
+        github_service.story_url = 'https://github.com/'
+        github_service.save()
+    mingjing_service, created = Service.objects.get_or_create(slug='mingjing')
+    if created:
+        mingjing_service.save()
 
 def main():
     service_crawlers = [
