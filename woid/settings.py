@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 from decouple import config, Csv
 from unipath import Path
+import os
 import dj_database_url
 
 from django.contrib.messages import constants as message_constants
@@ -76,11 +77,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'woid.wsgi.application'
 
-
-DATABASES = {
-    'default': dj_database_url.config(
-      default = config('DATABASE_URL'))
-}
+if 'RDS_HOSTNAME' in os.environ:
+    DATABASE = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ['RDS_DB_NAME'],
+            'USER': os.environ['RDS_USERNAME'],
+            'PASSWORD': os.environ['RDS_PASSWORD'],
+            'HOST': os.environ['RDS_HOSTNAME'],
+            'PORT': os.environ['RDS_PORT'],
+        }
+    }
+else:
+    DATABASES = {
+        'default': dj_database_url.config(
+        default = config('DATABASE_URL'))
+    }
 
 
 
