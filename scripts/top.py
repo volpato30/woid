@@ -15,13 +15,24 @@ django.setup()
 
 from twisted.internet import task
 from twisted.internet import reactor
-
+from woid.apps.services.models import Service
 from woid.apps.services import crawlers
 
 
 FIVE_MINUTES = 5 * 60
 THIRTY_MINUTES = 30 * 60
 
+def prepare_service():
+    hn_service = Service.objects.get_or_create(slug='hn')
+    hn_service.save()
+    nytimes_service = Service.objects.get_or_create(slug='nytimes')
+    nytimes_service.story_url = 'https://www.nytimes.com/'
+    nytimes_service.save()
+    github_service = Service.objects.get_or_create(slug='github')
+    github_service.story_url = 'https://github.com/'
+    github_service.save()
+    mingjing_service = Service.objects.get_or_create(slug='mingjing')
+    mingjing_service.save()
 
 def main():
     service_crawlers = [
@@ -40,4 +51,5 @@ def main():
     reactor.run()
 
 if __name__ == '__main__':
+    prepare_service()
     main()
