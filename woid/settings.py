@@ -86,6 +86,15 @@ if 'RDS_HOSTNAME' in os.environ:
             'PASSWORD': os.environ['RDS_PASSWORD'],
             'HOST': os.environ['RDS_HOSTNAME'],
             'PORT': os.environ['RDS_PORT'],
+            'OPTIONS': {
+                'sql_mode': 'TRADITIONAL',
+                'charset': 'utf8',
+                'init_command': 'SET '
+                    'storage_engine=INNODB,'
+                    'character_set_connection=utf8,'
+                    'collation_connection=utf8_bin,'
+                    'SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED',
+            },  # Now we have a mild degree of confidence :-)
         }
     }
 else:
