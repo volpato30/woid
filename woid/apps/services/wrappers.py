@@ -1,5 +1,4 @@
-# coding: utf-8
-
+# -*- coding: utf-8 -*-
 import logging
 import json
 import re
@@ -17,6 +16,28 @@ requests.packages.urllib3.disable_warnings()
 class AbstractBaseClient(object):
     def __init__(self):
         self.headers = { 'user-agent': 'woid/1.0' }
+
+class MingjingNewsClient(AbstractBaseClient):
+    Mingjing_url = 'http://news.mingjingnews.com/'
+    def __init__(self):
+        pass
+    
+    def get_front_page_stories(self):
+        stories = []
+        try:
+            html = requests.get(MingjingNewsClient.Mingjing_url).text
+            soup = BeautifulSoup(html, "html.parser")
+            h3_list = soup.find_all('h3', {'class': 'post-title entry-title'})
+            for node in h3_list:
+                news_data = {}
+                title = unicode(node.text)
+                url = node.find('a', href=re.compile('^(http://news.mingjingnews.com/)')).attrs['href']
+                news_data = {'url': url, 'title': title}
+                stories.append(news_data)
+        except Exception, e:
+            logging.error(e)
+            logging.error(html)
+        return stories
 
 
 class HackerNewsClient(object):

@@ -1,5 +1,4 @@
-# coding: utf-8
-
+# -*- coding: utf-8 -*-
 import logging
 
 from django.utils import timezone
@@ -58,8 +57,8 @@ class HackerNewsCrawler(AbstractBaseCrawler):
 
                 if story.status == Story.NEW:
                     story.date = timezone.datetime.fromtimestamp(story_data.get('time'), timezone.get_current_timezone())
-                    story.url = u'{0}{1}'.format(story.service.story_url, story.code)
-
+                    #story.url = u'{0}{1}'.format(story.service.story_url, story.code)
+                    story.url = story_data.get('url', '')
                 score = story_data.get('score', 0)
                 comments = story_data.get('descendants', 0)
                 has_changes = (score != story.score or comments != story.comments)
@@ -89,6 +88,26 @@ class HackerNewsCrawler(AbstractBaseCrawler):
                 story.save()
         except Exception, e:
             logging.error(u'Exception in code {0} HackerNewsCrawler.update_story'.format(code))
+            logging.error(e)
+
+class MingjingNewsCrawler(AbstractBaseCrawler):
+    def __init__(self):
+        super(MingjingNewsCrawler, self).__init__('mingjing', wrappers.MingjingNewsClient())
+    
+    def update_top_stories(self):
+        try:
+            stories = self.client.get_front_page_stories()
+            for data in stories:
+                story, created = Story.objects.get_or_create(service=self.service, code=data.get('url'))
+                story.date = timezone.datetime.now()
+                story.url = data.get('url', '')
+                story.title = data.get('title', '')
+                story.nsfw = False
+                story.comments = 0
+                story.score = 0
+                story.status = Story.OK
+                story.save()
+        except Exception, e:
             logging.error(e)
 
 
